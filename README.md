@@ -8,17 +8,24 @@ O sistema permite gerenciar livros, autores, membros e empréstimos de uma bibli
 
 ## Versão Atual
 
-v1.0.0 - Versão inicial com erros intencionais para demonstração
+v1.1.0 - Versão com correções dos erros intencionais
+
+## Histórico de Versões
+
+- v1.0.0 - Versão inicial com erros intencionais para demonstração
+- v1.1.0 - Versão com correções dos erros identificados
 
 ## Estrutura do Projeto
 
 - `biblioteca/` - Configurações do projeto Django
 - `books/` - App principal com models de livros, autores, membros e empréstimos
 - `ERROS_DOCUMENTACAO.md` - Documentação dos erros intencionais introduzidos
+- `CORRECOES_DOCUMENTACAO.md` - Documentação das correções aplicadas
 
-## Erros Intencionais
+## Erros Intencionais e Correções
 
-Para fins de aprendizado, este projeto contém erros intencionais documentados no arquivo `ERROS_DOCUMENTACAO.md`. Esses erros demonstram problemas comuns que podem ocorrer durante o desenvolvimento Django.
+A versão inicial (v1.0.0) deste projeto contém erros intencionais documentados no arquivo `ERROS_DOCUMENTACAO.md`. 
+Na versão atual (v1.1.0), todos esses erros foram corrigidos e as correções estão documentadas no arquivo `CORRECOES_DOCUMENTACAO.md`.
 
 ## Instalação
 
@@ -35,7 +42,7 @@ Para fins de aprendizado, este projeto contém erros intencionais documentados n
 
 ## Contribuição
 
-Este projeto é para fins educacionais. Contribuições são bem-vindas para corrigir os erros identificados.
+Este projeto é para fins educacionais. Contribuições são bem-vindas.
 
 ## Licença
 

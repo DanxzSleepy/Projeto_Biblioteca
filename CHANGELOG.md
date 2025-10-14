@@ -5,6 +5,16 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-10-14
+
+### Corrigido
+- Correção de todos os erros intencionais da versão anterior
+- Model Author com método __str__ adicionado e ordenação corrigida
+- Model Book com related_name adicionado, tipo de campo pages corrigido, referência __str__ corrigida e ordenação corrigida
+- Model Member com max_length adicionado ao phone_number e valor padrão corrigido
+- Model BorrowRecord com referência __str__ corrigida
+- Criação de documentação das correções aplicadas no arquivo CORRECOES_DOCUMENTACAO.md
+
 ## [1.0.0] - 2025-10-14
 
 ### Adicionado
