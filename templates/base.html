@@ -29,6 +29,9 @@
                     
                     {% if user.is_authenticated %}
                         <li class="nav-item">
+                            <a class="nav-link" href="{% url 'user_dashboard' %}">Meu Painel</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{% url 'request_list' %}">Solicitações</a>
                         </li>
                         
@@ -57,6 +60,9 @@
                     {% else %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'login' %}">Entrar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register' %}">Registrar</a>
                         </li>
                     {% endif %}
                 </ul>

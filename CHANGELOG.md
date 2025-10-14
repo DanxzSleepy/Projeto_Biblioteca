@@ -5,6 +5,16 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 2025-10-14
+
+### Adicionado
+- Sistema de registro de novos usuários
+- Painel do usuário com informações de empréstimos e solicitações
+- Funcionalidade de devolução de livros pelos próprios usuários
+- Verificação de prazos de devolução e destaque de livros atrasados
+- Templates para registro de usuários e painel do usuário
+- Atualização do README.md com informações sobre as novas funcionalidades
+
 ## [1.5.0] - 2025-10-14
 
 ### Adicionado

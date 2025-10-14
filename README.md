@@ -8,7 +8,7 @@ O sistema permite gerenciar livros, autores, membros e empréstimos de uma bibli
 
 ## Versão Atual
 
-v1.5.0 - Versão com sistema de solicitações de empréstimo
+v1.6.0 - Versão com sistema de registro de usuários e painel do usuário
 
 ## Histórico de Versões
 
@@ -22,6 +22,7 @@ v1.5.0 - Versão com sistema de solicitações de empréstimo
 - v1.4.3 - Versão com correção da funcionalidade de logout
 - v1.4.4 - Versão com documentação atualizada e correção de logout
 - v1.5.0 - Versão com sistema de solicitações de empréstimo
+- v1.6.0 - Versão com sistema de registro de usuários e painel do usuário
 
 ## Estrutura do Projeto
 
@@ -41,6 +42,9 @@ O sistema agora possui uma interface web completa com as seguintes páginas:
 - Lista de empréstimos (apenas para bibliotecários e administradores)
 - Lista de solicitações de empréstimo (para membros e bibliotecários)
 - Perfil do usuário
+- Painel do usuário com informações de empréstimos e solicitações
+- Página de registro de novos usuários
+- Página de login
 
 ## Sistema de Usuários e Controle de Acesso
 
@@ -53,6 +57,8 @@ O sistema implementa diferentes níveis de acesso baseados em perfis de usuário
    - Podem solicitar empréstimos de livros disponíveis (sistema de aprovação)
    - Podem visualizar seu próprio histórico de empréstimos
    - Podem visualizar e editar seu perfil
+   - Podem devolver livros a qualquer momento
+   - Podem visualizar livros com prazo vencido
 
 2. **Bibliotecários**:
    - Possuem todos os privilégios dos membros comuns
@@ -77,11 +83,14 @@ Ao executar o comando `populate_db`, os seguintes usuários são criados:
 
 ## Funcionalidades
 
+- **Registro de Usuários**: Novos usuários podem se registrar no sistema
 - **Login/Logout**: Sistema de autenticação completo
 - **Perfil de Usuário**: Visualização e gerenciamento de informações pessoais
+- **Painel do Usuário**: Visualização de livros emprestados, prazos e solicitações
 - **Sistema de Solicitações**: Membros solicitam empréstimos, bibliotecários aprovam/rejeitam
 - **Empréstimos**: Processo completo de empréstimo com aprovação
-- **Devoluções**: Bibliotecários podem registrar devoluções de livros
+- **Devoluções**: Usuários podem devolver livros a qualquer momento
+- **Controle de Prazos**: Sistema de verificação de prazos de devolução
 - **Controle de Acesso**: Diferentes funcionalidades baseadas no perfil do usuário
 - **Administração**: Interface administrativa completa para gerenciamento de dados
 
@@ -92,7 +101,8 @@ Ao executar o comando `populate_db`, os seguintes usuários são criados:
 3. **Bibliotecário** revisa as solicitações pendentes
 4. **Bibliotecário** aprova ou rejeita a solicitação
 5. Se aprovada, o empréstimo é registrado e o livro marcado como indisponível
-6. Quando o livro é devolvido, é marcado como disponível novamente
+6. O membro pode devolver o livro a qualquer momento através do painel
+7. Quando o livro é devolvido, é marcado como disponível novamente
 
 ## Erros Intencionais e Correções
 
@@ -125,7 +135,7 @@ python manage.py createsuperuser
 
 1. Inicie o servidor: `python manage.py runserver`
 2. Acesse http://127.0.0.1:8000/ para a interface web
-3. Faça login com um dos usuários de exemplo listados acima
+3. Registre-se como novo usuário ou faça login com um dos usuários de exemplo listados acima
 4. Acesse http://127.0.0.1:8000/admin/ para o painel administrativo (usuário: admin, senha: admin123)
 
 ## Contribuição

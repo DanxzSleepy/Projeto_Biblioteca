@@ -4,7 +4,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.utils import timezone
-from django.contrib.auth import logout
+from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth.forms import UserCreationForm
 from .models import Book, Author, Member, BorrowRecord, BookRequest
 from django.contrib.auth.models import User
 from datetime import date
@@ -85,6 +86,45 @@ def borrow_list(request):
     
     borrows = BorrowRecord.objects.all()
     return render(request, 'books/borrow_list.html', {'borrows': borrows})
+
+@login_required
+def user_dashboard(request):
+    """Display user dashboard with borrowed books and requests"""
+    try:
+        member = request.user.member
+    except Member.DoesNotExist:
+        messages.error(request, 'Você precisa ter um perfil de membro para acessar o painel.')
+        return HttpResponseRedirect(reverse('index'))
+    
+    # Get borrowed books (not returned yet)
+    borrowed_books = BorrowRecord.objects.filter(
+        member=member, 
+        return_date__isnull=True
+    ).select_related('book')
+    
+    # Calculate overdue books
+    today = date.today()
+    overdue_books = []
+    for record in borrowed_books:
+        # Assuming 14 days loan period
+        due_date = record.borrow_date + timezone.timedelta(days=14)
+        if today > due_date:
+            record.is_overdue = True
+            record.days_overdue = (today - due_date).days
+            overdue_books.append(record)
+    
+    # Get user's book requests
+    book_requests = BookRequest.objects.filter(member=member).select_related('book')
+    
+    context = {
+        'member': member,
+        'borrowed_books': borrowed_books,
+        'overdue_books': overdue_books,
+        'book_requests': book_requests,
+        'today': today,
+    }
+    
+    return render(request, 'books/user_dashboard.html', context)
 
 @login_required
 def request_book(request, book_id):
@@ -260,6 +300,40 @@ def return_book(request, borrow_id):
     messages.success(request, f'Livro "{borrow_record.book.title}" devolvido com sucesso!')
     return HttpResponseRedirect(reverse('borrow_list'))
 
+@login_required
+def return_book_user(request, borrow_id):
+    """Allow users to return their borrowed books"""
+    try:
+        member = request.user.member
+    except Member.DoesNotExist:
+        messages.error(request, 'Você precisa ter um perfil de membro para devolver livros.')
+        return HttpResponseRedirect(reverse('index'))
+    
+    # Get the borrow record and ensure it belongs to the current user
+    borrow_record = get_object_or_404(BorrowRecord, id=borrow_id, member=member)
+    
+    # Check if book is already returned
+    if borrow_record.return_date:
+        messages.error(request, 'Este livro já foi devolvido.')
+        return HttpResponseRedirect(reverse('user_dashboard'))
+    
+    # Process return
+    borrow_record.return_date = date.today()
+    borrow_record.save()
+    
+    # Mark book as available
+    borrow_record.book.available = True
+    borrow_record.book.save()
+    
+    # Update any approved requests for this book to completed
+    BookRequest.objects.filter(
+        book=borrow_record.book,
+        status='approved'
+    ).update(status='completed')
+    
+    messages.success(request, f'Livro "{borrow_record.book.title}" devolvido com sucesso!')
+    return HttpResponseRedirect(reverse('user_dashboard'))
+
 def profile_view(request):
     """View user profile"""
     if request.user.is_authenticated:
@@ -281,3 +355,21 @@ def logout_view(request):
     logout(request)
     messages.success(request, 'Você foi desconectado com sucesso.')
     return HttpResponseRedirect(reverse('index'))
+
+def register(request):
+    """Handle user registration"""
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            # Create member profile
+            Member.objects.create(
+                user=user,
+                phone_number="",
+                role='member'  # Default role is member
+            )
+            messages.success(request, 'Conta criada com sucesso! Você pode fazer login agora.')
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/register.html', {'form': form})

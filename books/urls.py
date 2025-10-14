@@ -12,6 +12,9 @@ urlpatterns = [
     path('requests/<int:request_id>/approve/', views.approve_request, name='approve_request'),
     path('requests/<int:request_id>/reject/', views.reject_request, name='reject_request'),
     path('borrows/<int:borrow_id>/return/', views.return_book, name='return_book'),
+    path('borrows/<int:borrow_id>/return/user/', views.return_book_user, name='return_book_user'),
     path('profile/', views.profile_view, name='profile'),
+    path('dashboard/', views.user_dashboard, name='user_dashboard'),
     path('accounts/logout/', views.logout_view, name='logout'),
+    path('register/', views.register, name='register'),
 ]
