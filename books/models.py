@@ -50,6 +50,28 @@ class Member(models.Model):
     def is_admin(self):
         return self.role == 'admin'
 
+class BookRequest(models.Model):
+    REQUEST_STATUS_CHOICES = [
+        ('pending', 'Pendente'),
+        ('approved', 'Aprovado'),
+        ('rejected', 'Rejeitado'),
+        ('completed', 'Concluído'),
+    ]
+    
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    request_date = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, choices=REQUEST_STATUS_CHOICES, default='pending')
+    approval_date = models.DateTimeField(null=True, blank=True)
+    approved_by = models.ForeignKey(Member, on_delete=models.SET_NULL, null=True, blank=True, related_name='approved_requests')
+    rejection_reason = models.TextField(blank=True)
+    
+    def __str__(self):
+        return f"{self.book.title} requested by {self.member.user.username}"
+    
+    class Meta:
+        ordering = ['-request_date']
+
 class BorrowRecord(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     member = models.ForeignKey(Member, on_delete=models.CASCADE)

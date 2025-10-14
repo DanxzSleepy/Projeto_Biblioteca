@@ -8,7 +8,7 @@ O sistema permite gerenciar livros, autores, membros e empréstimos de uma bibli
 
 ## Versão Atual
 
-v1.4.3 - Versão com correção da funcionalidade de logout
+v1.5.0 - Versão com sistema de solicitações de empréstimo
 
 ## Histórico de Versões
 
@@ -20,6 +20,8 @@ v1.4.3 - Versão com correção da funcionalidade de logout
 - v1.4.1 - Versão com template de perfil e configuração do admin
 - v1.4.2 - Versão com documentação atualizada
 - v1.4.3 - Versão com correção da funcionalidade de logout
+- v1.4.4 - Versão com documentação atualizada e correção de logout
+- v1.5.0 - Versão com sistema de solicitações de empréstimo
 
 ## Estrutura do Projeto
 
@@ -37,6 +39,7 @@ O sistema agora possui uma interface web completa com as seguintes páginas:
 - Lista de autores
 - Lista de membros (apenas para bibliotecários e administradores)
 - Lista de empréstimos (apenas para bibliotecários e administradores)
+- Lista de solicitações de empréstimo (para membros e bibliotecários)
 - Perfil do usuário
 
 ## Sistema de Usuários e Controle de Acesso
@@ -47,12 +50,13 @@ O sistema implementa diferentes níveis de acesso baseados em perfis de usuário
 
 1. **Membros Comuns**:
    - Podem visualizar livros e autores
-   - Podem solicitar empréstimos de livros disponíveis
+   - Podem solicitar empréstimos de livros disponíveis (sistema de aprovação)
    - Podem visualizar seu próprio histórico de empréstimos
    - Podem visualizar e editar seu perfil
 
 2. **Bibliotecários**:
    - Possuem todos os privilégios dos membros comuns
+   - Podem aprovar ou rejeitar solicitações de empréstimo
    - Podem gerenciar membros
    - Podem controlar empréstimos e devoluções
    - Podem acessar relatórios detalhados
@@ -75,10 +79,20 @@ Ao executar o comando `populate_db`, os seguintes usuários são criados:
 
 - **Login/Logout**: Sistema de autenticação completo
 - **Perfil de Usuário**: Visualização e gerenciamento de informações pessoais
-- **Empréstimos**: Membros podem solicitar empréstimos de livros disponíveis
+- **Sistema de Solicitações**: Membros solicitam empréstimos, bibliotecários aprovam/rejeitam
+- **Empréstimos**: Processo completo de empréstimo com aprovação
 - **Devoluções**: Bibliotecários podem registrar devoluções de livros
 - **Controle de Acesso**: Diferentes funcionalidades baseadas no perfil do usuário
 - **Administração**: Interface administrativa completa para gerenciamento de dados
+
+## Workflow de Empréstimo
+
+1. **Membro** solicita um livro disponível através da lista de livros
+2. **Solicitação** é registrada com status "Pendente"
+3. **Bibliotecário** revisa as solicitações pendentes
+4. **Bibliotecário** aprova ou rejeita a solicitação
+5. Se aprovada, o empréstimo é registrado e o livro marcado como indisponível
+6. Quando o livro é devolvido, é marcado como disponível novamente
 
 ## Erros Intencionais e Correções
 

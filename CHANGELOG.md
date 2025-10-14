@@ -5,6 +5,21 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2025-10-14
+
+### Adicionado
+- Sistema de solicitações de empréstimo com aprovação
+- Novo model BookRequest para gerenciar solicitações
+- Views para solicitar, aprovar e rejeitar empréstimos
+- Templates para lista de solicitações e rejeição de solicitações
+- Atualização do README.md com informações sobre o novo workflow
+
+## [1.4.4] - 2025-10-14
+
+### Corrigido
+- Atualização da documentação com correção de logout
+- Versionamento adequado
+
 ## [1.4.3] - 2025-10-14
 
 ### Corrigido

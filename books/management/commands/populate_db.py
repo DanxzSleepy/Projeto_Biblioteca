@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
-from books.models import Author, Book, Member, BorrowRecord
+from books.models import Author, Book, Member, BorrowRecord, BookRequest
 from datetime import date, timedelta
 
 class Command(BaseCommand):
@@ -8,6 +8,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # Clear existing data
+        BookRequest.objects.all().delete()
         BorrowRecord.objects.all().delete()
         Member.objects.all().delete()
         Book.objects.all().delete()
@@ -198,12 +199,39 @@ class Command(BaseCommand):
             return_date=date.today() - timedelta(days=10)
         )
 
+        # Create book requests
+        request1 = BookRequest.objects.create(
+            book=book4,
+            member=member1,
+            request_date=date.today() - timedelta(days=2)
+        )
+        
+        request2 = BookRequest.objects.create(
+            book=book2,
+            member=member2,
+            request_date=date.today() - timedelta(days=1),
+            status='approved',
+            approval_date=date.today() - timedelta(hours=12),
+            approved_by=member4
+        )
+        
+        request3 = BookRequest.objects.create(
+            book=book1,
+            member=member3,
+            request_date=date.today() - timedelta(days=3),
+            status='rejected',
+            approval_date=date.today() - timedelta(days=1),
+            approved_by=member4,
+            rejection_reason='Membro inativo'
+        )
+
         self.stdout.write(
             self.style.SUCCESS(
                 'Successfully populated the database with sample data\n'
                 f'Authors: {Author.objects.count()}\n'
                 f'Books: {Book.objects.count()}\n'
                 f'Members: {Member.objects.count()}\n'
-                f'Borrow Records: {BorrowRecord.objects.count()}'
+                f'Borrow Records: {BorrowRecord.objects.count()}\n'
+                f'Book Requests: {BookRequest.objects.count()}'
             )
         )

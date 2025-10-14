@@ -8,6 +8,12 @@
         <h1>Livros</h1>
         <p class="lead">Lista de todos os livros cadastrados no sistema.</p>
         
+        {% if user.is_authenticated %}
+            <div class="mb-3">
+                <a href="{% url 'request_list' %}" class="btn btn-info">Minhas Solicitações</a>
+            </div>
+        {% endif %}
+        
         {% if books %}
             <div class="table-responsive">
                 <table class="table table-striped table-hover">
@@ -42,7 +48,7 @@
                                 {% if user.is_authenticated and not user.member.is_librarian %}
                                     <td>
                                         {% if book.available %}
-                                            <a href="{% url 'borrow_book' book.id %}" class="btn btn-sm btn-primary">Solicitar Empréstimo</a>
+                                            <a href="{% url 'request_book' book.id %}" class="btn btn-sm btn-primary">Solicitar Empréstimo</a>
                                         {% else %}
                                             <button class="btn btn-sm btn-secondary" disabled>Indisponível</button>
                                         {% endif %}

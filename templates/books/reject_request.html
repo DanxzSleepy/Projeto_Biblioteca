@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Rejeitar Solicitação - Sistema de Biblioteca{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="text-center">Rejeitar Solicitação de Empréstimo</h3>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <strong>Livro:</strong> {{ request.book.title }}
+                </div>
+                <div class="mb-3">
+                    <strong>Membro:</strong> {{ request.member.user.first_name }} {{ request.member.user.last_name }}
+                </div>
+                <div class="mb-3">
+                    <strong>Data da Solicitação:</strong> {{ request.request_date|date:"d/m/Y H:i" }}
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="rejection_reason" class="form-label">Motivo da Rejeição</label>
+                        <textarea class="form-control" id="rejection_reason" name="rejection_reason" rows="3" required></textarea>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger">Rejeitar Solicitação</button>
+                        <a href="{% url 'request_list' %}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

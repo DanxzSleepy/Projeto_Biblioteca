@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth import logout
-from .models import Book, Author, Member, BorrowRecord
+from .models import Book, Author, Member, BorrowRecord, BookRequest
 from django.contrib.auth.models import User
 from datetime import date
 
@@ -87,7 +87,7 @@ def borrow_list(request):
     return render(request, 'books/borrow_list.html', {'borrows': borrows})
 
 @login_required
-def borrow_book(request, book_id):
+def request_book(request, book_id):
     """Allow members to request to borrow a book"""
     book = get_object_or_404(Book, id=book_id)
     
@@ -103,19 +103,125 @@ def borrow_book(request, book_id):
         messages.error(request, 'Este livro não está disponível para empréstimo.')
         return HttpResponseRedirect(reverse('book_list'))
     
+    # Check if user already has a pending request for this book
+    existing_request = BookRequest.objects.filter(
+        book=book, 
+        member=member, 
+        status__in=['pending', 'approved']
+    ).first()
+    
+    if existing_request:
+        messages.error(request, 'Você já possui uma solicitação pendente ou aprovada para este livro.')
+        return HttpResponseRedirect(reverse('book_list'))
+    
+    # Create book request
+    BookRequest.objects.create(
+        book=book,
+        member=member
+    )
+    
+    messages.success(request, f'Solicitação de empréstimo do livro "{book.title}" enviada com sucesso! Aguarde a aprovação do bibliotecário.')
+    return HttpResponseRedirect(reverse('book_list'))
+
+@login_required
+def request_list(request):
+    """Display book requests - members see their requests, librarians see all requests"""
+    try:
+        member = request.user.member
+    except Member.DoesNotExist:
+        messages.error(request, 'Você precisa ter um perfil de membro para acessar esta página.')
+        return HttpResponseRedirect(reverse('index'))
+    
+    if member.is_librarian:
+        # Librarians see all requests
+        requests = BookRequest.objects.all()
+    else:
+        # Members see only their own requests
+        requests = BookRequest.objects.filter(member=member)
+    
+    return render(request, 'books/request_list.html', {'requests': requests})
+
+@login_required
+def approve_request(request, request_id):
+    """Allow librarians to approve book requests"""
+    # Check if user has a member profile and is a librarian
+    try:
+        member = request.user.member
+        if not member.is_librarian:
+            messages.error(request, 'Acesso negado. Apenas bibliotecários podem aprovar solicitações.')
+            return HttpResponseRedirect(reverse('index'))
+    except Member.DoesNotExist:
+        messages.error(request, 'Acesso negado. Apenas bibliotecários podem aprovar solicitações.')
+        return HttpResponseRedirect(reverse('index'))
+    
+    book_request = get_object_or_404(BookRequest, id=request_id)
+    
+    # Check if request is already processed
+    if book_request.status != 'pending':
+        messages.error(request, 'Esta solicitação já foi processada.')
+        return HttpResponseRedirect(reverse('request_list'))
+    
+    # Check if book is still available
+    if not book_request.book.available:
+        messages.error(request, 'Este livro não está mais disponível para empréstimo.')
+        book_request.status = 'rejected'
+        book_request.rejection_reason = 'Livro não está mais disponível'
+        book_request.save()
+        return HttpResponseRedirect(reverse('request_list'))
+    
+    # Approve the request
+    book_request.status = 'approved'
+    book_request.approval_date = timezone.now()
+    book_request.approved_by = member
+    book_request.save()
+    
     # Create borrow record
     BorrowRecord.objects.create(
-        book=book,
-        member=member,
+        book=book_request.book,
+        member=book_request.member,
         borrow_date=date.today()
     )
     
     # Mark book as unavailable
-    book.available = False
-    book.save()
+    book_request.book.available = False
+    book_request.book.save()
     
-    messages.success(request, f'Empréstimo do livro "{book.title}" solicitado com sucesso!')
-    return HttpResponseRedirect(reverse('book_list'))
+    messages.success(request, f'Solicitação de "{book_request.book.title}" aprovada com sucesso!')
+    return HttpResponseRedirect(reverse('request_list'))
+
+@login_required
+def reject_request(request, request_id):
+    """Allow librarians to reject book requests"""
+    # Check if user has a member profile and is a librarian
+    try:
+        member = request.user.member
+        if not member.is_librarian:
+            messages.error(request, 'Acesso negado. Apenas bibliotecários podem rejeitar solicitações.')
+            return HttpResponseRedirect(reverse('index'))
+    except Member.DoesNotExist:
+        messages.error(request, 'Acesso negado. Apenas bibliotecários podem rejeitar solicitações.')
+        return HttpResponseRedirect(reverse('index'))
+    
+    book_request = get_object_or_404(BookRequest, id=request_id)
+    
+    # Check if request is already processed
+    if book_request.status != 'pending':
+        messages.error(request, 'Esta solicitação já foi processada.')
+        return HttpResponseRedirect(reverse('request_list'))
+    
+    # Reject the request
+    if request.method == 'POST':
+        reason = request.POST.get('rejection_reason', '')
+        book_request.status = 'rejected'
+        book_request.rejection_reason = reason
+        book_request.approval_date = timezone.now()
+        book_request.approved_by = member
+        book_request.save()
+        
+        messages.success(request, f'Solicitação de "{book_request.book.title}" rejeitada.')
+        return HttpResponseRedirect(reverse('request_list'))
+    else:
+        return render(request, 'books/reject_request.html', {'request': book_request})
 
 @login_required
 def return_book(request, borrow_id):
@@ -144,6 +250,12 @@ def return_book(request, borrow_id):
     # Mark book as available
     borrow_record.book.available = True
     borrow_record.book.save()
+    
+    # Update any approved requests for this book to completed
+    BookRequest.objects.filter(
+        book=borrow_record.book,
+        status='approved'
+    ).update(status='completed')
     
     messages.success(request, f'Livro "{borrow_record.book.title}" devolvido com sucesso!')
     return HttpResponseRedirect(reverse('borrow_list'))
