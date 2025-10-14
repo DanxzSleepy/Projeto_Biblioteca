@@ -5,6 +5,13 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.1] - 2025-10-14
+
+### Adicionado
+- Template de perfil do usuário faltante
+- Configuração completa do Django Admin para todos os models
+- Arquivo .gitignore para exclusão de arquivos desnecessários
+
 ## [1.4.0] - 2025-10-14
 
 ### Adicionado

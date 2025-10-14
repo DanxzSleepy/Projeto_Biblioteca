@@ -8,7 +8,7 @@ O sistema permite gerenciar livros, autores, membros e empréstimos de uma bibli
 
 ## Versão Atual
 
-v1.4.0 - Versão com perfil de usuário e melhorias na experiência do usuário
+v1.4.1 - Versão com template de perfil e configuração do admin
 
 ## Histórico de Versões
 
@@ -17,6 +17,7 @@ v1.4.0 - Versão com perfil de usuário e melhorias na experiência do usuário
 - v1.2.0 - Versão com interface web completa e dados de exemplo
 - v1.3.0 - Versão com sistema de usuários e controle de acesso
 - v1.4.0 - Versão com perfil de usuário e melhorias na experiência do usuário
+- v1.4.1 - Versão com template de perfil e configuração do admin
 
 ## Estrutura do Projeto
 
@@ -75,6 +76,7 @@ Ao executar o comando `populate_db`, os seguintes usuários são criados:
 - **Empréstimos**: Membros podem solicitar empréstimos de livros disponíveis
 - **Devoluções**: Bibliotecários podem registrar devoluções de livros
 - **Controle de Acesso**: Diferentes funcionalidades baseadas no perfil do usuário
+- **Administração**: Interface administrativa completa para gerenciamento de dados
 
 ## Erros Intencionais e Correções
 
