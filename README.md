@@ -8,7 +8,7 @@ O sistema permite gerenciar livros, autores, membros e empréstimos de uma bibli
 
 ## Versão Atual
 
-v1.4.1 - Versão com template de perfil e configuração do admin
+v1.4.3 - Versão com correção da funcionalidade de logout
 
 ## Histórico de Versões
 
@@ -18,6 +18,8 @@ v1.4.1 - Versão com template de perfil e configuração do admin
 - v1.3.0 - Versão com sistema de usuários e controle de acesso
 - v1.4.0 - Versão com perfil de usuário e melhorias na experiência do usuário
 - v1.4.1 - Versão com template de perfil e configuração do admin
+- v1.4.2 - Versão com documentação atualizada
+- v1.4.3 - Versão com correção da funcionalidade de logout
 
 ## Estrutura do Projeto
 

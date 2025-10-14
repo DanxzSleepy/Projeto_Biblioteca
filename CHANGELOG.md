@@ -5,6 +5,18 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.3] - 2025-10-14
+
+### Corrigido
+- Problema com a funcionalidade de logout que redirecionava para uma página em branco
+- Remoção de padrões de URL conflitantes para logout
+- Implementação de view de logout personalizada
+
+## [1.4.2] - 2025-10-14
+
+### Adicionado
+- Atualização da documentação para refletir a versão mais recente
+
 ## [1.4.1] - 2025-10-14
 
 ### Adicionado
