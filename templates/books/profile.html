@@ -12,43 +12,75 @@
                 <h3>Informações do Usuário</h3>
             </div>
             <div class="card-body">
-                <dl class="row">
-                    <dt class="col-sm-3">Nome:</dt>
-                    <dd class="col-sm-9">{{ user.first_name }} {{ user.last_name }}</dd>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="first_name" class="form-label">Primeiro Nome</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name" value="{{ user.first_name }}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="last_name" class="form-label">Último Nome</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name" value="{{ user.last_name }}">
+                            </div>
+                        </div>
+                    </div>
                     
-                    <dt class="col-sm-3">Nome de Usuário:</dt>
-                    <dd class="col-sm-9">{{ user.username }}</dd>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Nome de Usuário</label>
+                                <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}" readonly>
+                                <div class="form-text">O nome de usuário não pode ser alterado.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
+                            </div>
+                        </div>
+                    </div>
                     
-                    <dt class="col-sm-3">Email:</dt>
-                    <dd class="col-sm-9">{{ user.email }}</dd>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="phone_number" class="form-label">Telefone</label>
+                                <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{ member.phone_number }}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Tipo de Usuário</label>
+                                <input type="text" class="form-control" value="{% if member.role == 'member' %}Membro{% endif %}{% if member.role == 'librarian' %}Bibliotecário{% endif %}{% if member.role == 'admin' %}Administrador{% endif %}" readonly>
+                            </div>
+                        </div>
+                    </div>
                     
-                    <dt class="col-sm-3">Telefone:</dt>
-                    <dd class="col-sm-9">{{ member.phone_number|default:"Não informado" }}</dd>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Data de Cadastro</label>
+                                <input type="text" class="form-control" value="{{ member.membership_date }}" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Status</label>
+                                <input type="text" class="form-control" value="{% if member.is_active %}Ativo{% else %}Inativo{% endif %}" readonly>
+                            </div>
+                        </div>
+                    </div>
                     
-                    <dt class="col-sm-3">Tipo de Usuário:</dt>
-                    <dd class="col-sm-9">
-                        {% if member.role == 'member' %}Membro{% endif %}
-                        {% if member.role == 'librarian' %}Bibliotecário{% endif %}
-                        {% if member.role == 'admin' %}Administrador{% endif %}
-                    </dd>
-                    
-                    <dt class="col-sm-3">Data de Cadastro:</dt>
-                    <dd class="col-sm-9">{{ member.membership_date }}</dd>
-                    
-                    <dt class="col-sm-3">Status:</dt>
-                    <dd class="col-sm-9">
-                        {% if member.is_active %}
-                            <span class="badge bg-success">Ativo</span>
-                        {% else %}
-                            <span class="badge bg-danger">Inativo</span>
-                        {% endif %}
-                    </dd>
-                </dl>
+                    <div class="mt-3">
+                        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                        <a href="{% url 'user_dashboard' %}" class="btn btn-secondary">Voltar para o Painel</a>
+                    </div>
+                </form>
             </div>
-        </div>
-        
-        <div class="mt-3">
-            <a href="{% url 'index' %}" class="btn btn-primary">Voltar para o Início</a>
         </div>
     </div>
 </div>

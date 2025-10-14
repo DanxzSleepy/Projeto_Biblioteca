@@ -96,7 +96,7 @@ def user_dashboard(request):
         messages.error(request, 'Você precisa ter um perfil de membro para acessar o painel.')
         return HttpResponseRedirect(reverse('index'))
     
-    # Get borrowed books (not returned yet)
+    # Get borrowed books (not returned yet) for the current user only
     borrowed_books = BorrowRecord.objects.filter(
         member=member, 
         return_date__isnull=True
@@ -104,14 +104,14 @@ def user_dashboard(request):
     
     # Calculate overdue books
     today = date.today()
-    overdue_books = []
     for record in borrowed_books:
         # Assuming 14 days loan period
         due_date = record.borrow_date + timezone.timedelta(days=14)
         if today > due_date:
             record.is_overdue = True
             record.days_overdue = (today - due_date).days
-            overdue_books.append(record)
+        else:
+            record.is_overdue = False
     
     # Get user's book requests
     book_requests = BookRequest.objects.filter(member=member).select_related('book')
@@ -119,7 +119,6 @@ def user_dashboard(request):
     context = {
         'member': member,
         'borrowed_books': borrowed_books,
-        'overdue_books': overdue_books,
         'book_requests': book_requests,
         'today': today,
     }
@@ -335,20 +334,41 @@ def return_book_user(request, borrow_id):
     return HttpResponseRedirect(reverse('user_dashboard'))
 
 def profile_view(request):
-    """View user profile"""
-    if request.user.is_authenticated:
-        try:
-            member = request.user.member
-        except Member.DoesNotExist:
-            # Create a member profile if it doesn't exist
-            member = Member.objects.create(
-                user=request.user,
-                phone_number="",
-                role='member'
-            )
-        return render(request, 'books/profile.html', {'member': member})
-    else:
+    """View and edit user profile"""
+    if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('login'))
+    
+    try:
+        member = request.user.member
+    except Member.DoesNotExist:
+        # Create a member profile if it doesn't exist
+        member = Member.objects.create(
+            user=request.user,
+            phone_number="",
+            role='member'
+        )
+    
+    if request.method == 'POST':
+        # Update user information
+        first_name = request.POST.get('first_name', '')
+        last_name = request.POST.get('last_name', '')
+        email = request.POST.get('email', '')
+        phone_number = request.POST.get('phone_number', '')
+        
+        # Update User model
+        request.user.first_name = first_name
+        request.user.last_name = last_name
+        request.user.email = email
+        request.user.save()
+        
+        # Update Member model
+        member.phone_number = phone_number
+        member.save()
+        
+        messages.success(request, 'Perfil atualizado com sucesso!')
+        return HttpResponseRedirect(reverse('profile'))
+    
+    return render(request, 'books/profile.html', {'member': member})
 
 def logout_view(request):
     """Custom logout view"""

@@ -8,7 +8,7 @@ O sistema permite gerenciar livros, autores, membros e empréstimos de uma bibli
 
 ## Versão Atual
 
-v1.6.0 - Versão com sistema de registro de usuários e painel do usuário
+v1.6.1 - Versão com correções de acesso e edição de perfil
 
 ## Histórico de Versões
 
@@ -23,6 +23,7 @@ v1.6.0 - Versão com sistema de registro de usuários e painel do usuário
 - v1.4.4 - Versão com documentação atualizada e correção de logout
 - v1.5.0 - Versão com sistema de solicitações de empréstimo
 - v1.6.0 - Versão com sistema de registro de usuários e painel do usuário
+- v1.6.1 - Versão com correções de acesso e edição de perfil
 
 ## Estrutura do Projeto
 
@@ -59,6 +60,7 @@ O sistema implementa diferentes níveis de acesso baseados em perfis de usuário
    - Podem visualizar e editar seu perfil
    - Podem devolver livros a qualquer momento
    - Podem visualizar livros com prazo vencido
+   - Têm acesso ao painel pessoal com informações sobre seus empréstimos
 
 2. **Bibliotecários**:
    - Possuem todos os privilégios dos membros comuns
@@ -66,6 +68,7 @@ O sistema implementa diferentes níveis de acesso baseados em perfis de usuário
    - Podem gerenciar membros
    - Podem controlar empréstimos e devoluções
    - Podem acessar relatórios detalhados
+   - Podem visualizar todas as solicitações de empréstimo
 
 3. **Administradores**:
    - Possuem todos os privilégios dos bibliotecários
@@ -85,8 +88,8 @@ Ao executar o comando `populate_db`, os seguintes usuários são criados:
 
 - **Registro de Usuários**: Novos usuários podem se registrar no sistema
 - **Login/Logout**: Sistema de autenticação completo
-- **Perfil de Usuário**: Visualização e gerenciamento de informações pessoais
-- **Painel do Usuário**: Visualização de livros emprestados, prazos e solicitações
+- **Perfil de Usuário**: Visualização e edição de informações pessoais
+- **Painel do Usuário**: Visualização pessoal de livros emprestados, prazos e solicitações
 - **Sistema de Solicitações**: Membros solicitam empréstimos, bibliotecários aprovam/rejeitam
 - **Empréstimos**: Processo completo de empréstimo com aprovação
 - **Devoluções**: Usuários podem devolver livros a qualquer momento
@@ -103,6 +106,14 @@ Ao executar o comando `populate_db`, os seguintes usuários são criados:
 5. Se aprovada, o empréstimo é registrado e o livro marcado como indisponível
 6. O membro pode devolver o livro a qualquer momento através do painel
 7. Quando o livro é devolvido, é marcado como disponível novamente
+
+## Segurança e Controle de Acesso
+
+- Cada usuário só pode visualizar e editar suas próprias informações
+- Apenas bibliotecários e administradores podem aprovar/rejeitar solicitações
+- Apenas bibliotecários e administradores podem gerenciar empréstimos
+- O painel do usuário é pessoal e não acessível por outros usuários
+- Perfis de usuário podem ser editados apenas pelo próprio usuário
 
 ## Erros Intencionais e Correções
 

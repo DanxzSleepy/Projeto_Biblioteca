@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 
-{% block title %}Painel do Usuário - Sistema de Biblioteca{% endblock %}
+{% block title %}Meu Painel - Sistema de Biblioteca{% endblock %}
 
 {% block content %}
 <div class="row">
     <div class="col-md-12">
-        <h1>Painel do Usuário</h1>
-        <p>Bem-vindo, <strong>{{ user.first_name }} {{ user.last_name }}</strong>!</p>
+        <h1>Meu Painel</h1>
+        <p>Bem-vindo, <strong>{{ user.first_name }} {{ user.last_name }}</strong>! Esta é a sua área pessoal onde você pode gerenciar seus empréstimos e solicitações.</p>
         
         <!-- User Info Card -->
         <div class="card mb-4">
             <div class="card-header">
-                <h3>Informações do Usuário</h3>
+                <h3>Minhas Informações</h3>
             </div>
             <div class="card-body">
                 <dl class="row">
@@ -36,6 +36,11 @@
                     
                     <dt class="col-sm-3">Data de Cadastro:</dt>
                     <dd class="col-sm-9">{{ member.membership_date }}</dd>
+                    
+                    <dt class="col-sm-3">Ações:</dt>
+                    <dd class="col-sm-9">
+                        <a href="{% url 'profile' %}" class="btn btn-sm btn-primary">Editar Perfil</a>
+                    </dd>
                 </dl>
             </div>
         </div>
@@ -43,7 +48,7 @@
         <!-- Borrowed Books Section -->
         <div class="card mb-4">
             <div class="card-header">
-                <h3>Livros Emprestados</h3>
+                <h3>Meus Livros Emprestados</h3>
             </div>
             <div class="card-body">
                 {% if borrowed_books %}
@@ -97,7 +102,7 @@
         <!-- Book Requests Section -->
         <div class="card mb-4">
             <div class="card-header">
-                <h3>Solicitações de Empréstimo</h3>
+                <h3>Minhas Solicitações de Empréstimo</h3>
             </div>
             <div class="card-body">
                 {% if book_requests %}
@@ -139,7 +144,7 @@
         
         <div class="mt-3">
             <a href="{% url 'book_list' %}" class="btn btn-primary">Ver Catálogo de Livros</a>
-            <a href="{% url 'profile' %}" class="btn btn-secondary">Editar Perfil</a>
+            <a href="{% url 'request_list' %}" class="btn btn-secondary">Ver Todas Solicitações</a>
         </div>
     </div>
 </div>

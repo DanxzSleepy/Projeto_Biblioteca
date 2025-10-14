@@ -5,6 +5,14 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.1] - 2025-10-14
+
+### Corrigido
+- Acesso inadequado ao painel de usuários por administradores/bibliotecários
+- Funcionalidade de edição de perfil de usuário
+- Clarificação de que o painel do usuário é pessoal e não acessível por outros usuários
+- Atualização da documentação com informações corretas sobre controle de acesso
+
 ## [1.6.0] - 2025-10-14
 
 ### Adicionado
