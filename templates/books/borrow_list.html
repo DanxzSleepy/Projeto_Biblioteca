@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Empréstimos - Sistema de Biblioteca{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1>Empréstimos</h1>
+        <p class="lead">Lista de todos os empréstimos registrados no sistema.</p>
+        
+        {% if borrows %}
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Livro</th>
+                            <th>Membro</th>
+                            <th>Data de Empréstimo</th>
+                            <th>Data de Devolução</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for borrow in borrows %}
+                            <tr>
+                                <td>{{ borrow.book.title }}</td>
+                                <td>{{ borrow.member.user.first_name }} {{ borrow.member.user.last_name }}</td>
+                                <td>{{ borrow.borrow_date }}</td>
+                                <td>{{ borrow.return_date|default:"Não devolvido" }}</td>
+                                <td>
+                                    {% if borrow.return_date %}
+                                        <span class="badge bg-success">Devolvido</span>
+                                    {% else %}
+                                        <span class="badge bg-warning">Emprestado</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                <p>Nenhum empréstimo registrado ainda.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -19,8 +19,18 @@ v1.1.0 - Versão com correções dos erros intencionais
 
 - `biblioteca/` - Configurações do projeto Django
 - `books/` - App principal com models de livros, autores, membros e empréstimos
+- `templates/` - Templates HTML para a interface web
 - `ERROS_DOCUMENTACAO.md` - Documentação dos erros intencionais introduzidos
 - `CORRECOES_DOCUMENTACAO.md` - Documentação das correções aplicadas
+
+## Interface Gráfica
+
+O sistema agora possui uma interface web completa com as seguintes páginas:
+- Página inicial com estatísticas da biblioteca
+- Lista de livros
+- Lista de autores
+- Lista de membros
+- Lista de empréstimos
 
 ## Erros Intencionais e Correções
 
@@ -35,10 +45,25 @@ Na versão atual (v1.1.0), todos esses erros foram corrigidos e as correções e
 4. Instale as dependências: `pip install -r requirements.txt`
 5. Execute as migrações: `python manage.py migrate`
 
+## Popular o Banco de Dados
+
+Para popular o banco de dados com dados de exemplo:
+```
+python manage.py populate_db
+```
+
+## Criar Superusuário
+
+Para criar um superusuário para acessar o admin:
+```
+python manage.py createsuperuser
+```
+
 ## Uso
 
 1. Inicie o servidor: `python manage.py runserver`
-2. Acesse http://127.0.0.1:8000/
+2. Acesse http://127.0.0.1:8000/ para a interface web
+3. Acesse http://127.0.0.1:8000/admin/ para o painel administrativo (usuário: admin, senha: admin123)
 
 ## Contribuição
 

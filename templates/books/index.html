@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Início - Sistema de Biblioteca{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1>Bem-vindo ao Sistema de Biblioteca</h1>
+        <p class="lead">Gerencie livros, autores, membros e empréstimos de forma eficiente.</p>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-header">Livros</div>
+            <div class="card-body">
+                <h5 class="card-title">{{ total_books }}</h5>
+                <p class="card-text">Total de livros cadastrados</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-header">Autores</div>
+            <div class="card-body">
+                <h5 class="card-title">{{ total_authors }}</h5>
+                <p class="card-text">Total de autores cadastrados</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-header">Membros</div>
+            <div class="card-body">
+                <h5 class="card-title">{{ total_members }}</h5>
+                <p class="card-text">Total de membros cadastrados</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card text-white bg-warning mb-3">
+            <div class="card-header">Empréstimos</div>
+            <div class="card-body">
+                <h5 class="card-title">{{ borrowed_books }}</h5>
+                <p class="card-text">Livros emprestados</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <h3>Funcionalidades</h3>
+        <ul>
+            <li>Gerenciar livros e autores</li>
+            <li>Cadastrar e gerenciar membros</li>
+            <li>Controlar empréstimos e devoluções</li>
+            <li>Visualizar relatórios</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
