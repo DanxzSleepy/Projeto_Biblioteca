@@ -10,12 +10,56 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="{% url 'index' %}">Biblioteca</a>
-            <div class="navbar-nav">
-                <a class="nav-link" href="{% url 'index' %}">Início</a>
-                <a class="nav-link" href="{% url 'book_list' %}">Livros</a>
-                <a class="nav-link" href="{% url 'author_list' %}">Autores</a>
-                <a class="nav-link" href="{% url 'member_list' %}">Membros</a>
-                <a class="nav-link" href="{% url 'borrow_list' %}">Empréstimos</a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'index' %}">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'book_list' %}">Livros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'author_list' %}">Autores</a>
+                    </li>
+                    
+                    {% if user.is_authenticated %}
+                        {% if user.member.is_librarian %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'member_list' %}">Membros</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'borrow_list' %}">Empréstimos</a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                </ul>
+                
+                <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <span class="navbar-text me-3">
+                                Olá, {{ user.first_name }} 
+                                {% if user.member.role == 'librarian' %}(Bibliotecário){% endif %}
+                                {% if user.member.role == 'admin' %}(Administrador){% endif %}
+                            </span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Sair</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Entrar</a>
+                        </li>
+                    {% endif %}
+                </ul>
             </div>
         </div>
     </nav>

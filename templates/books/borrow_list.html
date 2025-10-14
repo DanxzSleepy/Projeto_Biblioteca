@@ -18,6 +18,9 @@
                             <th>Data de Empréstimo</th>
                             <th>Data de Devolução</th>
                             <th>Status</th>
+                            {% if user.is_authenticated and user.member.is_librarian %}
+                                <th>Ações</th>
+                            {% endif %}
                         </tr>
                     </thead>
                     <tbody>
@@ -34,6 +37,15 @@
                                         <span class="badge bg-warning">Emprestado</span>
                                     {% endif %}
                                 </td>
+                                {% if user.is_authenticated and user.member.is_librarian %}
+                                    <td>
+                                        {% if not borrow.return_date %}
+                                            <a href="{% url 'return_book' borrow.id %}" class="btn btn-sm btn-success">Registrar Devolução</a>
+                                        {% else %}
+                                            <button class="btn btn-sm btn-secondary" disabled>Já Devolvido</button>
+                                        {% endif %}
+                                    </td>
+                                {% endif %}
                             </tr>
                         {% endfor %}
                     </tbody>

@@ -94,24 +94,61 @@ class Command(BaseCommand):
             email="pedro@example.com",
             password="password123"
         )
+        
+        # Create librarian user
+        user4 = User.objects.create_user(
+            username="ana_bibliotecaria",
+            first_name="Ana",
+            last_name="Bibliotecária",
+            email="ana@example.com",
+            password="password123"
+        )
+        
+        # Create admin user
+        user5 = User.objects.create_user(
+            username="carlos_admin",
+            first_name="Carlos",
+            last_name="Administrador",
+            email="carlos@example.com",
+            password="password123"
+        )
 
         # Create members
         member1 = Member.objects.create(
             user=user1,
             phone_number="(11) 99999-9999",
-            is_active=True
+            is_active=True,
+            role='member'
         )
         
         member2 = Member.objects.create(
             user=user2,
             phone_number="(21) 98888-8888",
-            is_active=True
+            is_active=True,
+            role='member'
         )
         
         member3 = Member.objects.create(
             user=user3,
             phone_number="(31) 97777-7777",
-            is_active=False
+            is_active=False,
+            role='member'
+        )
+        
+        # Create librarian
+        member4 = Member.objects.create(
+            user=user4,
+            phone_number="(41) 96666-6666",
+            is_active=True,
+            role='librarian'
+        )
+        
+        # Create admin
+        member5 = Member.objects.create(
+            user=user5,
+            phone_number="(51) 95555-5555",
+            is_active=True,
+            role='admin'
         )
 
         # Create borrow records

@@ -6,7 +6,11 @@
 <div class="row">
     <div class="col-md-12">
         <h1>Bem-vindo ao Sistema de Biblioteca</h1>
-        <p class="lead">Gerencie livros, autores, membros e empréstimos de forma eficiente.</p>
+        {% if user.is_authenticated %}
+            <p class="lead">Olá, {{ user.first_name }}! Bem-vindo ao sistema de gerenciamento de biblioteca.</p>
+        {% else %}
+            <p class="lead">Faça login para acessar todas as funcionalidades do sistema.</p>
+        {% endif %}
     </div>
 </div>
 
@@ -55,12 +59,27 @@
 <div class="row mt-4">
     <div class="col-md-12">
         <h3>Funcionalidades</h3>
-        <ul>
-            <li>Gerenciar livros e autores</li>
-            <li>Cadastrar e gerenciar membros</li>
-            <li>Controlar empréstimos e devoluções</li>
-            <li>Visualizar relatórios</li>
-        </ul>
+        {% if user.is_authenticated %}
+            <ul>
+                <li>Visualizar livros e autores</li>
+                {% if user.member.is_librarian %}
+                    <li>Gerenciar membros</li>
+                    <li>Controlar empréstimos e devoluções</li>
+                    <li>Acessar relatórios detalhados</li>
+                {% else %}
+                    <li>Solicitar empréstimos de livros disponíveis</li>
+                    <li>Visualizar seu histórico de empréstimos</li>
+                {% endif %}
+            </ul>
+        {% else %}
+            <p>Faça login para acessar as funcionalidades do sistema:</p>
+            <ul>
+                <li>Visualizar livros e autores</li>
+                <li>Solicitar empréstimos (para membros)</li>
+                <li>Gerenciar empréstimos (para bibliotecários e administradores)</li>
+            </ul>
+            <a href="{% url 'login' %}" class="btn btn-primary">Entrar no Sistema</a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

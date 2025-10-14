@@ -27,13 +27,28 @@ class Book(models.Model):
         ordering = ['title']
 
 class Member(models.Model):
+    USER_ROLE_CHOICES = [
+        ('member', 'Membro'),
+        ('librarian', 'Bibliotecário'),
+        ('admin', 'Administrador'),
+    ]
+    
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=15)
     membership_date = models.DateField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
+    role = models.CharField(max_length=20, choices=USER_ROLE_CHOICES, default='member')
     
     def __str__(self):
-        return f"{self.user.first_name} {self.user.last_name}"
+        return f"{self.user.first_name} {self.user.last_name} ({self.get_role_display()})"
+    
+    @property
+    def is_librarian(self):
+        return self.role == 'librarian' or self.role == 'admin'
+    
+    @property
+    def is_admin(self):
+        return self.role == 'admin'
 
 class BorrowRecord(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
@@ -43,3 +58,7 @@ class BorrowRecord(models.Model):
     
     def __str__(self):
         return f"{self.book.title} borrowed by {self.member.user.username}"
+    
+    @property
+    def is_returned(self):
+        return self.return_date is not None
