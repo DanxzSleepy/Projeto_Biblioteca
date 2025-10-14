@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.utils import timezone
+from django.contrib.auth import logout
 from .models import Book, Author, Member, BorrowRecord
 from django.contrib.auth.models import User
 from datetime import date
@@ -162,3 +163,9 @@ def profile_view(request):
         return render(request, 'books/profile.html', {'member': member})
     else:
         return HttpResponseRedirect(reverse('login'))
+
+def logout_view(request):
+    """Custom logout view"""
+    logout(request)
+    messages.success(request, 'Você foi desconectado com sucesso.')
+    return HttpResponseRedirect(reverse('index'))
