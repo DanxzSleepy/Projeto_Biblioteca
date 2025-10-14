@@ -8,7 +8,7 @@ O sistema permite gerenciar livros, autores, membros e empréstimos de uma bibli
 
 ## Versão Atual
 
-v1.3.0 - Versão com sistema de usuários e controle de acesso
+v1.4.0 - Versão com perfil de usuário e melhorias na experiência do usuário
 
 ## Histórico de Versões
 
@@ -16,6 +16,7 @@ v1.3.0 - Versão com sistema de usuários e controle de acesso
 - v1.1.0 - Versão com correções dos erros identificados
 - v1.2.0 - Versão com interface web completa e dados de exemplo
 - v1.3.0 - Versão com sistema de usuários e controle de acesso
+- v1.4.0 - Versão com perfil de usuário e melhorias na experiência do usuário
 
 ## Estrutura do Projeto
 
@@ -33,6 +34,7 @@ O sistema agora possui uma interface web completa com as seguintes páginas:
 - Lista de autores
 - Lista de membros (apenas para bibliotecários e administradores)
 - Lista de empréstimos (apenas para bibliotecários e administradores)
+- Perfil do usuário
 
 ## Sistema de Usuários e Controle de Acesso
 
@@ -44,6 +46,7 @@ O sistema implementa diferentes níveis de acesso baseados em perfis de usuário
    - Podem visualizar livros e autores
    - Podem solicitar empréstimos de livros disponíveis
    - Podem visualizar seu próprio histórico de empréstimos
+   - Podem visualizar e editar seu perfil
 
 2. **Bibliotecários**:
    - Possuem todos os privilégios dos membros comuns
@@ -64,6 +67,14 @@ Ao executar o comando `populate_db`, os seguintes usuários são criados:
 - **pedro_costa** - Senha: password123 (Membro)
 - **ana_bibliotecaria** - Senha: password123 (Bibliotecária)
 - **carlos_admin** - Senha: password123 (Administrador)
+
+## Funcionalidades
+
+- **Login/Logout**: Sistema de autenticação completo
+- **Perfil de Usuário**: Visualização e gerenciamento de informações pessoais
+- **Empréstimos**: Membros podem solicitar empréstimos de livros disponíveis
+- **Devoluções**: Bibliotecários podem registrar devoluções de livros
+- **Controle de Acesso**: Diferentes funcionalidades baseadas no perfil do usuário
 
 ## Erros Intencionais e Correções
 

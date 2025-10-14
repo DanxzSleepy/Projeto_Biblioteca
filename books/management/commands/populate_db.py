@@ -12,6 +12,8 @@ class Command(BaseCommand):
         Member.objects.all().delete()
         Book.objects.all().delete()
         Author.objects.all().delete()
+        
+        # Only delete non-superuser users (keep superusers)
         User.objects.filter(is_superuser=False).delete()
 
         # Create authors
@@ -70,85 +72,115 @@ class Command(BaseCommand):
             available=True
         )
 
-        # Create users
-        user1 = User.objects.create_user(
+        # Create or get users
+        user1, created = User.objects.get_or_create(
             username="joao_silva",
-            first_name="João",
-            last_name="Silva",
-            email="joao@example.com",
-            password="password123"
+            defaults={
+                'first_name': "João",
+                'last_name': "Silva",
+                'email': "joao@example.com"
+            }
         )
+        if created:
+            user1.set_password("password123")
+            user1.save()
         
-        user2 = User.objects.create_user(
+        user2, created = User.objects.get_or_create(
             username="maria_santos",
-            first_name="Maria",
-            last_name="Santos",
-            email="maria@example.com",
-            password="password123"
+            defaults={
+                'first_name': "Maria",
+                'last_name': "Santos",
+                'email': "maria@example.com"
+            }
         )
+        if created:
+            user2.set_password("password123")
+            user2.save()
         
-        user3 = User.objects.create_user(
+        user3, created = User.objects.get_or_create(
             username="pedro_costa",
-            first_name="Pedro",
-            last_name="Costa",
-            email="pedro@example.com",
-            password="password123"
+            defaults={
+                'first_name': "Pedro",
+                'last_name': "Costa",
+                'email': "pedro@example.com"
+            }
         )
+        if created:
+            user3.set_password("password123")
+            user3.save()
         
         # Create librarian user
-        user4 = User.objects.create_user(
+        user4, created = User.objects.get_or_create(
             username="ana_bibliotecaria",
-            first_name="Ana",
-            last_name="Bibliotecária",
-            email="ana@example.com",
-            password="password123"
+            defaults={
+                'first_name': "Ana",
+                'last_name': "Bibliotecária",
+                'email': "ana@example.com"
+            }
         )
+        if created:
+            user4.set_password("password123")
+            user4.save()
         
         # Create admin user
-        user5 = User.objects.create_user(
+        user5, created = User.objects.get_or_create(
             username="carlos_admin",
-            first_name="Carlos",
-            last_name="Administrador",
-            email="carlos@example.com",
-            password="password123"
+            defaults={
+                'first_name': "Carlos",
+                'last_name': "Administrador",
+                'email': "carlos@example.com"
+            }
         )
+        if created:
+            user5.set_password("password123")
+            user5.save()
 
         # Create members
-        member1 = Member.objects.create(
+        member1, created = Member.objects.get_or_create(
             user=user1,
-            phone_number="(11) 99999-9999",
-            is_active=True,
-            role='member'
+            defaults={
+                'phone_number': "(11) 99999-9999",
+                'is_active': True,
+                'role': 'member'
+            }
         )
         
-        member2 = Member.objects.create(
+        member2, created = Member.objects.get_or_create(
             user=user2,
-            phone_number="(21) 98888-8888",
-            is_active=True,
-            role='member'
+            defaults={
+                'phone_number': "(21) 98888-8888",
+                'is_active': True,
+                'role': 'member'
+            }
         )
         
-        member3 = Member.objects.create(
+        member3, created = Member.objects.get_or_create(
             user=user3,
-            phone_number="(31) 97777-7777",
-            is_active=False,
-            role='member'
+            defaults={
+                'phone_number': "(31) 97777-7777",
+                'is_active': False,
+                'role': 'member'
+            }
         )
         
         # Create librarian
-        member4 = Member.objects.create(
+        member4, created = Member.objects.get_or_create(
             user=user4,
-            phone_number="(41) 96666-6666",
-            is_active=True,
-            role='librarian'
+            defaults={
+                'phone_number': "(41) 96666-6666",
+                'is_active': True,
+                'role': 'librarian'
+            }
         )
         
         # Create admin
-        member5 = Member.objects.create(
+        member5, created = Member.objects.get_or_create(
             user=user5,
-            phone_number="(51) 95555-5555",
-            is_active=True,
-            role='admin'
+            defaults={
+                'phone_number': "(51) 95555-5555",
+                'is_active': True,
+                'role': 'admin'
+            }
         )
 
         # Create borrow records

@@ -5,6 +5,18 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2025-10-14
+
+### Adicionado
+- Página de perfil do usuário
+- Sistema de signals para criação automática de perfis de membro
+- Melhorias na experiência do usuário
+- Atualização do README.md com informações sobre o perfil de usuário
+
+### Corrigido
+- Problemas com logout e navegação
+- Tratamento de usuários sem perfis de membro
+
 ## [1.3.0] - 2025-10-14
 
 ### Adicionado

@@ -3,8 +3,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from django.utils import timezone
 from .models import Book, Author, Member, BorrowRecord
 from django.contrib.auth.models import User
+from datetime import date
 
 def index(request):
     """Home page showing library statistics"""
@@ -135,7 +137,6 @@ def return_book(request, borrow_id):
         return HttpResponseRedirect(reverse('borrow_list'))
     
     # Process return
-    from datetime import date
     borrow_record.return_date = date.today()
     borrow_record.save()
     
@@ -145,3 +146,19 @@ def return_book(request, borrow_id):
     
     messages.success(request, f'Livro "{borrow_record.book.title}" devolvido com sucesso!')
     return HttpResponseRedirect(reverse('borrow_list'))
+
+def profile_view(request):
+    """View user profile"""
+    if request.user.is_authenticated:
+        try:
+            member = request.user.member
+        except Member.DoesNotExist:
+            # Create a member profile if it doesn't exist
+            member = Member.objects.create(
+                user=request.user,
+                phone_number="",
+                role='member'
+            )
+        return render(request, 'books/profile.html', {'member': member})
+    else:
+        return HttpResponseRedirect(reverse('login'))
